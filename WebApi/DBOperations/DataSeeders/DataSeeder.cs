@@ -12,6 +12,8 @@ public class DataSeeder
     {
         using (MovieStoreDbContext context = new MovieStoreDbContext(serviceProvider.GetRequiredService<DbContextOptions<MovieStoreDbContext>>()))
         {
+            context.Database.EnsureCreated();
+
             List<Genre> genres =
             [
                 new Genre("Drama"),
@@ -57,6 +59,15 @@ public class DataSeeder
                 new Actor("Elliot", "Page"),
             ];
 
+            List<Customer> customers =
+            [
+                new Customer("Den", "Eme"),
+                new Customer("Great", "Alexander"),
+                new Customer("Emir", "Timur"),
+                new Customer("Queen", "Cleopatra"),
+                new Customer("Artemisia ", "Caria")
+            ];
+
             List<MovieActor> movieActors =
             [
                 new MovieActor(movies[0], actors[0]),
@@ -74,15 +85,6 @@ public class DataSeeder
                 new MovieActor(movies[4], actors[12]),
                 new MovieActor(movies[4], actors[13]),
                 new MovieActor(movies[4], actors[14])
-            ];
-
-            List<Customer> customers =
-            [
-                new Customer("Den", "Eme"),
-                new Customer("Great", "Alexander"),
-                new Customer("Emir", "Timur"),
-                new Customer("Queen", "Cleopatra"),
-                new Customer("Artemisia ", "Caria")
             ];
 
             List<CustomerGenre> customerGenres =
