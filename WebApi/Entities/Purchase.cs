@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApi.Entities;
 
@@ -19,5 +18,13 @@ public class Purchase
         PurchaseTime = purchaseTime;
         CustomerId = customerId;
         MovieId = movieId;
+    }
+
+    public Purchase(double price, DateTime purchaseTime, Customer customer, Movie movie)
+    {
+        Price = price;
+        PurchaseTime = purchaseTime;
+        Customer = customer;
+        Movie = movie;
     }
 }

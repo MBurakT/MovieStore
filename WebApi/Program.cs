@@ -1,7 +1,12 @@
 // dotnet watch run --project WebApi/WebApi.csproj
+using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApi.DBOperations;
+using WebApi.DBOperations.DataSeeders;
 
 namespace WebApi;
 
@@ -14,11 +19,23 @@ public class Program
         // Add services to the container.
 
         builder.Services.AddControllers();
+
+        string conn = $"Server={File.ReadAllText(Environment.CurrentDirectory + "\\Database.txt")};Database=MovieStoreDB;Trusted_Connection=True;TrustServerCertificate=True";
+        builder.Services.AddDbContext<MovieStoreDbContext>(
+            opt => opt.UseSqlServer(conn));
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        #region SeedDatabase
+        // using (IServiceScope serviceScope = app.Services.CreateScope())
+        // {
+        //     DataSeeder.Seed(serviceScope.ServiceProvider);
+        // }
+        #endregion
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
