@@ -12,7 +12,7 @@ public class DataSeeder
     {
         using (MovieStoreDbContext context = new MovieStoreDbContext(serviceProvider.GetRequiredService<DbContextOptions<MovieStoreDbContext>>()))
         {
-            context.Database.EnsureCreated();
+            // context.Database.EnsureCreated();
 
             List<Genre> genres =
             [

@@ -12,7 +12,7 @@ using WebApi.DBOperations;
 namespace WebApi.DBOperations.Migrations.InitialMigration
 {
     [DbContext(typeof(MovieStoreDbContext))]
-    [Migration("20240206114147_InitialMigration")]
+    [Migration("20240206155452_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
