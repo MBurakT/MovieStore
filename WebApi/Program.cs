@@ -2,6 +2,7 @@
 // dotnet ef migrations add InitialMigration --output-dir DBOperations/Migrations/InitialMigration
 using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,8 +18,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
         builder.Services.AddControllers();
 
         // string conn = $"Data Source={Environment.CurrentDirectory}\\SQLite\\MovieStoreDB.db";
@@ -27,7 +26,10 @@ public class Program
             opt => opt.UseSqlServer(conn));
         // opt => opt.UseSqlite(conn));
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddScoped<IMovieStoreDbContext>(provider => provider.GetRequiredService<MovieStoreDbContext>());
+
+        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -40,7 +42,6 @@ public class Program
         // }
         #endregion
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
