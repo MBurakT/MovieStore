@@ -15,6 +15,6 @@ public class PurchaseConfiguration : IEntityTypeConfiguration<Purchase>
         builder.Property(x => x.PurchaseTime).HasColumnName("PURCHASETIME").IsRequired();
 
         builder.HasOne(x => x.Customer).WithMany(x => x.Purchases).HasForeignKey(x => x.CustomerId);
-        builder.HasOne(x => x.Movie).WithMany(x => x.Purchases).HasForeignKey(x => x.MovieId);
+        builder.HasOne(x => x.Movie).WithMany().HasForeignKey(x => x.MovieId);
     }
 }

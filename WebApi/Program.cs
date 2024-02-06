@@ -1,4 +1,5 @@
 // dotnet watch run --project WebApi/WebApi.csproj
+// dotnet ef migrations add InitialMigration --output-dir DBOperations/Migrations/InitialMigration
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
@@ -33,10 +34,10 @@ public class Program
         var app = builder.Build();
 
         #region SeedDatabase
-        // using (IServiceScope serviceScope = app.Services.CreateScope())
-        // {
-        //     DataSeeder.Seed(serviceScope.ServiceProvider);
-        // }
+        using (IServiceScope serviceScope = app.Services.CreateScope())
+        {
+            DataSeeder.Seed(serviceScope.ServiceProvider);
+        }
         #endregion
 
         // Configure the HTTP request pipeline.

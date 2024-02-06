@@ -13,5 +13,8 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(x => x.Id).UseIdentityColumn().HasColumnName("ID");
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
         builder.Property(x => x.Surname).HasColumnName("SURNAME").IsRequired();
+
+        builder.Ignore(x => x.Movies);
+        builder.Ignore(x => x.FavoriteGenres);
     }
 }

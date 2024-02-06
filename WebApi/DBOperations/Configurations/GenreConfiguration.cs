@@ -9,7 +9,7 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
     public void Configure(EntityTypeBuilder<Genre> builder)
     {
         builder.ToTable("GENRES");
-        
+
         builder.Property(x => x.Id).UseIdentityColumn().HasColumnName("ID");
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
     }

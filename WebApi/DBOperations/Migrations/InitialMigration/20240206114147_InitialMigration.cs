@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApi.DBOperations.Migrations.Initial
+namespace WebApi.DBOperations.Migrations.InitialMigration
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,17 +59,11 @@ namespace WebApi.DBOperations.Migrations.Initial
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NAME = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                    NAME = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GENRES", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_GENRES_CUSTOMERS_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "CUSTOMERS",
-                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -106,17 +100,11 @@ namespace WebApi.DBOperations.Migrations.Initial
                     RELEASEDATE = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PRICE = table.Column<double>(type: "float", nullable: false),
                     GenreId = table.Column<int>(type: "int", nullable: false),
-                    DirectorId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                    DirectorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MOVIES", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_MOVIES_CUSTOMERS_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "CUSTOMERS",
-                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_MOVIES_DIRECTORS_DirectorId",
                         column: x => x.DirectorId,
@@ -216,19 +204,9 @@ namespace WebApi.DBOperations.Migrations.Initial
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GENRES_CustomerId",
-                table: "GENRES",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_MOVIEACTORS_ActorId",
                 table: "MOVIEACTORS",
                 column: "ActorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MOVIES_CustomerId",
-                table: "MOVIES",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MOVIES_DirectorId",
@@ -265,6 +243,9 @@ namespace WebApi.DBOperations.Migrations.Initial
                 name: "ACTORS");
 
             migrationBuilder.DropTable(
+                name: "CUSTOMERS");
+
+            migrationBuilder.DropTable(
                 name: "MOVIES");
 
             migrationBuilder.DropTable(
@@ -272,9 +253,6 @@ namespace WebApi.DBOperations.Migrations.Initial
 
             migrationBuilder.DropTable(
                 name: "GENRES");
-
-            migrationBuilder.DropTable(
-                name: "CUSTOMERS");
         }
     }
 }

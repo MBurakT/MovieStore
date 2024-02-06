@@ -8,7 +8,6 @@ public class Customer
     public string Name { get; set; }
     public string Surname { get; set; }
 
-    public ICollection<CustomerGenre>? CustomerGenres { get; set; }
     public ICollection<Genre>? FavoriteGenres { get; set; }
     public ICollection<Purchase>? Purchases { get; set; }
     public ICollection<Movie>? Movies { get; set; }

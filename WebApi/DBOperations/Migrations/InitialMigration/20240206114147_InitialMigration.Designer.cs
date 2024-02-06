@@ -9,11 +9,11 @@ using WebApi.DBOperations;
 
 #nullable disable
 
-namespace WebApi.DBOperations.Migrations.Initial
+namespace WebApi.DBOperations.Migrations.InitialMigration
 {
     [DbContext(typeof(MovieStoreDbContext))]
-    [Migration("20240206110251_Initial")]
-    partial class Initial
+    [Migration("20240206114147_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,17 +136,12 @@ namespace WebApi.DBOperations.Migrations.Initial
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("NAME");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("GENRES", (string)null);
                 });
@@ -159,9 +154,6 @@ namespace WebApi.DBOperations.Migrations.Initial
                         .HasColumnName("ID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
 
                     b.Property<int>("DirectorId")
                         .HasColumnType("int");
@@ -183,8 +175,6 @@ namespace WebApi.DBOperations.Migrations.Initial
                         .HasColumnName("RELEASEDATE");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DirectorId");
 
@@ -249,13 +239,13 @@ namespace WebApi.DBOperations.Migrations.Initial
             modelBuilder.Entity("WebApi.Entities.CustomerGenre", b =>
                 {
                     b.HasOne("WebApi.Entities.Customer", "Customer")
-                        .WithMany("CustomerGenres")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebApi.Entities.Genre", "Genre")
-                        .WithMany("CustomerGenres")
+                        .WithMany()
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -265,19 +255,8 @@ namespace WebApi.DBOperations.Migrations.Initial
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Genre", b =>
-                {
-                    b.HasOne("WebApi.Entities.Customer", null)
-                        .WithMany("FavoriteGenres")
-                        .HasForeignKey("CustomerId");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Movie", b =>
                 {
-                    b.HasOne("WebApi.Entities.Customer", null)
-                        .WithMany("Movies")
-                        .HasForeignKey("CustomerId");
-
                     b.HasOne("WebApi.Entities.Director", "Director")
                         .WithMany("Movies")
                         .HasForeignKey("DirectorId")
@@ -298,13 +277,13 @@ namespace WebApi.DBOperations.Migrations.Initial
             modelBuilder.Entity("WebApi.Entities.MovieActor", b =>
                 {
                     b.HasOne("WebApi.Entities.Actor", "Actor")
-                        .WithMany("MovieActors")
+                        .WithMany()
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebApi.Entities.Movie", "Movie")
-                        .WithMany("MovieActors")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -323,7 +302,7 @@ namespace WebApi.DBOperations.Migrations.Initial
                         .IsRequired();
 
                     b.HasOne("WebApi.Entities.Movie", "Movie")
-                        .WithMany("Purchases")
+                        .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -333,19 +312,8 @@ namespace WebApi.DBOperations.Migrations.Initial
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Actor", b =>
-                {
-                    b.Navigation("MovieActors");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Customer", b =>
                 {
-                    b.Navigation("CustomerGenres");
-
-                    b.Navigation("FavoriteGenres");
-
-                    b.Navigation("Movies");
-
                     b.Navigation("Purchases");
                 });
 
@@ -356,16 +324,7 @@ namespace WebApi.DBOperations.Migrations.Initial
 
             modelBuilder.Entity("WebApi.Entities.Genre", b =>
                 {
-                    b.Navigation("CustomerGenres");
-
                     b.Navigation("Movies");
-                });
-
-            modelBuilder.Entity("WebApi.Entities.Movie", b =>
-                {
-                    b.Navigation("MovieActors");
-
-                    b.Navigation("Purchases");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,7 +12,7 @@ public class CustomerGenreConfiguration : IEntityTypeConfiguration<CustomerGenre
 
         builder.HasKey(x => new { x.CustomerId, x.GenreId });
 
-        builder.HasOne(x => x.Customer).WithMany(x => x.CustomerGenres).HasForeignKey(x => x.CustomerId);
-        builder.HasOne(x => x.Genre).WithMany(x => x.CustomerGenres).HasForeignKey(x => x.GenreId);
+        builder.HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);
+        builder.HasOne(x => x.Genre).WithMany().HasForeignKey(x => x.GenreId);
     }
 }
