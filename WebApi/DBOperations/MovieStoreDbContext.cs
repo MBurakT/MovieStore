@@ -23,13 +23,14 @@ public class MovieStoreDbContext : DbContext, IMovieStoreDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        new MovieConfiguration().Configure(modelBuilder.Entity<Movie>());
-        new ActorConfiguration().Configure(modelBuilder.Entity<Actor>());
-        new MovieActorConfiguration().Configure(modelBuilder.Entity<MovieActor>());
-        new GenreConfiguration().Configure(modelBuilder.Entity<Genre>());
-        new DirectorConfiguration().Configure(modelBuilder.Entity<Director>());
-        new CustomerConfiguration().Configure(modelBuilder.Entity<Customer>());
-        new CustomerGenreConfiguration().Configure(modelBuilder.Entity<CustomerGenre>());
-        new PurchaseConfiguration().Configure(modelBuilder.Entity<Purchase>());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MovieConfiguration).Assembly);
+        // new MovieConfiguration().Configure(modelBuilder.Entity<Movie>());
+        // new ActorConfiguration().Configure(modelBuilder.Entity<Actor>());
+        // new MovieActorConfiguration().Configure(modelBuilder.Entity<MovieActor>());
+        // new GenreConfiguration().Configure(modelBuilder.Entity<Genre>());
+        // new DirectorConfiguration().Configure(modelBuilder.Entity<Director>());
+        // new CustomerConfiguration().Configure(modelBuilder.Entity<Customer>());
+        // new CustomerGenreConfiguration().Configure(modelBuilder.Entity<CustomerGenre>());
+        // new PurchaseConfiguration().Configure(modelBuilder.Entity<Purchase>());
     }
 }
