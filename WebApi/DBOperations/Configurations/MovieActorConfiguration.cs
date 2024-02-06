@@ -10,6 +10,9 @@ public class MovieActorConfiguration : IEntityTypeConfiguration<MovieActor>
     {
         builder.HasKey(x => new { x.MovieId, x.ActorId });
 
+        builder.Property(x => x.MovieId).HasColumnName("MOVIEID").IsRequired();
+        builder.Property(x => x.ActorId).HasColumnName("ACTORID").IsRequired();
+
         builder.HasOne(x => x.Movie).WithMany().HasForeignKey(x => x.MovieId);
         builder.HasOne(x => x.Actor).WithMany().HasForeignKey(x => x.ActorId);
 

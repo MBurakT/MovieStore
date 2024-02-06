@@ -10,6 +10,9 @@ public class CustomerGenreConfiguration : IEntityTypeConfiguration<CustomerGenre
     {
         builder.HasKey(x => new { x.CustomerId, x.GenreId });
 
+        builder.Property(x => x.CustomerId).HasColumnName("CUSTOMERID").IsRequired();
+        builder.Property(x => x.GenreId).HasColumnName("GENREID").IsRequired();
+
         builder.HasOne(x => x.Customer).WithMany().HasForeignKey(x => x.CustomerId);
         builder.HasOne(x => x.Genre).WithMany().HasForeignKey(x => x.GenreId);
 

@@ -12,6 +12,8 @@ public class ActorConfiguration : IEntityTypeConfiguration<Actor>
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
         builder.Property(x => x.Surname).HasColumnName("SURNAME").IsRequired();
 
+        builder.Ignore(x => x.Movies);
+
         builder.ToTable("ACTORS");
     }
 }

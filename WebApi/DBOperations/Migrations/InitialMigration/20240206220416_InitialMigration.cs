@@ -70,21 +70,21 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
                 name: "CUSTOMERGENRES",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false)
+                    CUSTOMERID = table.Column<int>(type: "int", nullable: false),
+                    GENREID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CUSTOMERGENRES", x => new { x.CustomerId, x.GenreId });
+                    table.PrimaryKey("PK_CUSTOMERGENRES", x => new { x.CUSTOMERID, x.GENREID });
                     table.ForeignKey(
-                        name: "FK_CUSTOMERGENRES_CUSTOMERS_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_CUSTOMERGENRES_CUSTOMERS_CUSTOMERID",
+                        column: x => x.CUSTOMERID,
                         principalTable: "CUSTOMERS",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CUSTOMERGENRES_GENRES_GenreId",
-                        column: x => x.GenreId,
+                        name: "FK_CUSTOMERGENRES_GENRES_GENREID",
+                        column: x => x.GENREID,
                         principalTable: "GENRES",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -99,46 +99,22 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
                     NAME = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RELEASEDATE = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PRICE = table.Column<double>(type: "float", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false),
-                    DirectorId = table.Column<int>(type: "int", nullable: false)
+                    GENREID = table.Column<int>(type: "int", nullable: false),
+                    DIRECTORID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MOVIES", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_MOVIES_DIRECTORS_DirectorId",
-                        column: x => x.DirectorId,
+                        name: "FK_MOVIES_DIRECTORS_DIRECTORID",
+                        column: x => x.DIRECTORID,
                         principalTable: "DIRECTORS",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MOVIES_GENRES_GenreId",
-                        column: x => x.GenreId,
+                        name: "FK_MOVIES_GENRES_GENREID",
+                        column: x => x.GENREID,
                         principalTable: "GENRES",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ActorMovie",
-                columns: table => new
-                {
-                    ActorsId = table.Column<int>(type: "int", nullable: false),
-                    MoviesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActorMovie", x => new { x.ActorsId, x.MoviesId });
-                    table.ForeignKey(
-                        name: "FK_ActorMovie_ACTORS_ActorsId",
-                        column: x => x.ActorsId,
-                        principalTable: "ACTORS",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ActorMovie_MOVIES_MoviesId",
-                        column: x => x.MoviesId,
-                        principalTable: "MOVIES",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -147,21 +123,21 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
                 name: "MOVIEACTORS",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "int", nullable: false),
-                    ActorId = table.Column<int>(type: "int", nullable: false)
+                    MOVIEID = table.Column<int>(type: "int", nullable: false),
+                    ACTORID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MOVIEACTORS", x => new { x.MovieId, x.ActorId });
+                    table.PrimaryKey("PK_MOVIEACTORS", x => new { x.MOVIEID, x.ACTORID });
                     table.ForeignKey(
-                        name: "FK_MOVIEACTORS_ACTORS_ActorId",
-                        column: x => x.ActorId,
+                        name: "FK_MOVIEACTORS_ACTORS_ACTORID",
+                        column: x => x.ACTORID,
                         principalTable: "ACTORS",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MOVIEACTORS_MOVIES_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_MOVIEACTORS_MOVIES_MOVIEID",
+                        column: x => x.MOVIEID,
                         principalTable: "MOVIES",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -171,65 +147,57 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
                 name: "PURCHASES",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    CUSTOMERID = table.Column<int>(type: "int", nullable: false),
+                    MOVIEID = table.Column<int>(type: "int", nullable: false),
                     PRICE = table.Column<double>(type: "float", nullable: false),
                     PURCHASETIME = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PURCHASES", x => new { x.CustomerId, x.MovieId });
+                    table.PrimaryKey("PK_PURCHASES", x => new { x.CUSTOMERID, x.MOVIEID });
                     table.ForeignKey(
-                        name: "FK_PURCHASES_CUSTOMERS_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_PURCHASES_CUSTOMERS_CUSTOMERID",
+                        column: x => x.CUSTOMERID,
                         principalTable: "CUSTOMERS",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PURCHASES_MOVIES_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_PURCHASES_MOVIES_MOVIEID",
+                        column: x => x.MOVIEID,
                         principalTable: "MOVIES",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActorMovie_MoviesId",
-                table: "ActorMovie",
-                column: "MoviesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CUSTOMERGENRES_GenreId",
+                name: "IX_CUSTOMERGENRES_GENREID",
                 table: "CUSTOMERGENRES",
-                column: "GenreId");
+                column: "GENREID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MOVIEACTORS_ActorId",
+                name: "IX_MOVIEACTORS_ACTORID",
                 table: "MOVIEACTORS",
-                column: "ActorId");
+                column: "ACTORID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MOVIES_DirectorId",
+                name: "IX_MOVIES_DIRECTORID",
                 table: "MOVIES",
-                column: "DirectorId");
+                column: "DIRECTORID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MOVIES_GenreId",
+                name: "IX_MOVIES_GENREID",
                 table: "MOVIES",
-                column: "GenreId");
+                column: "GENREID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PURCHASES_MovieId",
+                name: "IX_PURCHASES_MOVIEID",
                 table: "PURCHASES",
-                column: "MovieId");
+                column: "MOVIEID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ActorMovie");
-
             migrationBuilder.DropTable(
                 name: "CUSTOMERGENRES");
 

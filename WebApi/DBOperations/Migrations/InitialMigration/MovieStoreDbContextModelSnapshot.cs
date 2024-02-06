@@ -22,21 +22,6 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ActorMovie", b =>
-                {
-                    b.Property<int>("ActorsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActorsId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("ActorMovie");
-                });
-
             modelBuilder.Entity("WebApi.Entities.Actor", b =>
                 {
                     b.Property<int>("Id")
@@ -88,10 +73,12 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
             modelBuilder.Entity("WebApi.Entities.CustomerGenre", b =>
                 {
                     b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CUSTOMERID");
 
                     b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("GENREID");
 
                     b.HasKey("CustomerId", "GenreId");
 
@@ -153,10 +140,12 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DirectorId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("DIRECTORID");
 
                     b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("GENREID");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -183,10 +172,12 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
             modelBuilder.Entity("WebApi.Entities.MovieActor", b =>
                 {
                     b.Property<int>("MovieId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("MOVIEID");
 
                     b.Property<int>("ActorId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ACTORID");
 
                     b.HasKey("MovieId", "ActorId");
 
@@ -198,10 +189,12 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
             modelBuilder.Entity("WebApi.Entities.Purchase", b =>
                 {
                     b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CUSTOMERID");
 
                     b.Property<int>("MovieId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("MOVIEID");
 
                     b.Property<double>("Price")
                         .HasColumnType("float")
@@ -216,21 +209,6 @@ namespace WebApi.DBOperations.Migrations.InitialMigration
                     b.HasIndex("MovieId");
 
                     b.ToTable("PURCHASES", (string)null);
-                });
-
-            modelBuilder.Entity("ActorMovie", b =>
-                {
-                    b.HasOne("WebApi.Entities.Actor", null)
-                        .WithMany()
-                        .HasForeignKey("ActorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApi.Entities.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApi.Entities.CustomerGenre", b =>
