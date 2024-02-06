@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.DBOperations;
 
 #nullable disable
 
-namespace WebApi.Migrations.InitialMigration
+namespace WebApi.DBOperations.Migrations.Initial
 {
     [DbContext(typeof(MovieStoreDbContext))]
-    [Migration("20240205123648_InitialMigration")]
-    partial class InitialMigration
+    partial class MovieStoreDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +21,21 @@ namespace WebApi.Migrations.InitialMigration
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ActorMovie", b =>
+                {
+                    b.Property<int>("ActorsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MoviesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActorsId", "MoviesId");
+
+                    b.HasIndex("MoviesId");
+
+                    b.ToTable("ActorMovie");
+                });
 
             modelBuilder.Entity("WebApi.Entities.Actor", b =>
                 {
@@ -121,12 +133,17 @@ namespace WebApi.Migrations.InitialMigration
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("NAME");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("GENRES", (string)null);
                 });
@@ -139,6 +156,9 @@ namespace WebApi.Migrations.InitialMigration
                         .HasColumnName("ID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<int>("DirectorId")
                         .HasColumnType("int");
@@ -160,6 +180,8 @@ namespace WebApi.Migrations.InitialMigration
                         .HasColumnName("RELEASEDATE");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DirectorId");
 
@@ -206,6 +228,21 @@ namespace WebApi.Migrations.InitialMigration
                     b.ToTable("PURCHASES", (string)null);
                 });
 
+            modelBuilder.Entity("ActorMovie", b =>
+                {
+                    b.HasOne("WebApi.Entities.Actor", null)
+                        .WithMany()
+                        .HasForeignKey("ActorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApi.Entities.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WebApi.Entities.CustomerGenre", b =>
                 {
                     b.HasOne("WebApi.Entities.Customer", "Customer")
@@ -225,8 +262,19 @@ namespace WebApi.Migrations.InitialMigration
                     b.Navigation("Genre");
                 });
 
+            modelBuilder.Entity("WebApi.Entities.Genre", b =>
+                {
+                    b.HasOne("WebApi.Entities.Customer", null)
+                        .WithMany("FavoriteGenres")
+                        .HasForeignKey("CustomerId");
+                });
+
             modelBuilder.Entity("WebApi.Entities.Movie", b =>
                 {
+                    b.HasOne("WebApi.Entities.Customer", null)
+                        .WithMany("Movies")
+                        .HasForeignKey("CustomerId");
+
                     b.HasOne("WebApi.Entities.Director", "Director")
                         .WithMany("Movies")
                         .HasForeignKey("DirectorId")
@@ -290,6 +338,10 @@ namespace WebApi.Migrations.InitialMigration
             modelBuilder.Entity("WebApi.Entities.Customer", b =>
                 {
                     b.Navigation("CustomerGenres");
+
+                    b.Navigation("FavoriteGenres");
+
+                    b.Navigation("Movies");
 
                     b.Navigation("Purchases");
                 });

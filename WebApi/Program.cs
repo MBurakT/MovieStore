@@ -24,7 +24,7 @@ public class Program
         string conn = $"Server={File.ReadAllText(Environment.CurrentDirectory + "\\Database.txt")};Database=MovieStoreDB;Trusted_Connection=True;TrustServerCertificate=True";
         builder.Services.AddDbContext<MovieStoreDbContext>(
             opt => opt.UseSqlServer(conn));
-            // opt => opt.UseSqlite(conn));
+        // opt => opt.UseSqlite(conn));
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
