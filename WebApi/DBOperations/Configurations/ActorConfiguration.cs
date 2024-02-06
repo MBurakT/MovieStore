@@ -8,10 +8,10 @@ public class ActorConfiguration : IEntityTypeConfiguration<Actor>
 {
     public void Configure(EntityTypeBuilder<Actor> builder)
     {
-        builder.ToTable("ACTORS");
-
         builder.Property(x => x.Id).UseIdentityColumn().HasColumnName("ID");
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
         builder.Property(x => x.Surname).HasColumnName("SURNAME").IsRequired();
+
+        builder.ToTable("ACTORS");
     }
 }

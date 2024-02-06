@@ -8,10 +8,10 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
 {
     public void Configure(EntityTypeBuilder<Director> builder)
     {
-        builder.ToTable("DIRECTORS");
-
         builder.Property(x => x.Id).UseIdentityColumn().HasColumnName("ID");
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
         builder.Property(x => x.Surname).HasColumnName("SURNAME").IsRequired();
+
+        builder.ToTable("DIRECTORS");
     }
 }

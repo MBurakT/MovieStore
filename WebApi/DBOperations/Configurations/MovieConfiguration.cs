@@ -8,8 +8,6 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 {
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
-        builder.ToTable("MOVIES");
-
         builder.Property(x => x.Id).UseIdentityColumn().HasColumnName("ID");
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
         builder.Property(x => x.ReleaseDate).HasColumnName("RELEASEDATE").IsRequired();
@@ -17,5 +15,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.HasOne(x => x.Genre).WithMany(x => x.Movies).HasForeignKey(x => x.GenreId);
         builder.HasOne(x => x.Director).WithMany(x => x.Movies).HasForeignKey(x => x.DirectorId);
+
+        builder.ToTable("MOVIES");
     }
 }
