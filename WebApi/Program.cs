@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApi.ControllerOperations.MovieOperations;
 using WebApi.DBOperations;
 using WebApi.DBOperations.DataSeeders;
 
@@ -29,6 +30,8 @@ public class Program
         builder.Services.AddScoped<IMovieStoreDbContext>(provider => provider.GetRequiredService<MovieStoreDbContext>());
 
         builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        builder.Services.AddScoped<MovieOperation>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
