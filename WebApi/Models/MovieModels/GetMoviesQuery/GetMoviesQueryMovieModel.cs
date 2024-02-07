@@ -8,24 +8,7 @@ public class GetMoviesQueryMovieModel
     public string? Name { get; set; }
     public DateTime? ReleaseDate { get; set; }
     public double? Price { get; set; }
-    public GetMoviesQueryGenreModel? Genre { get; set; }
-    public GetMoviesQueryDirectorModel? Director { get; set; }
-    public ICollection<GetMoviesQueryActorModel>? Actors { get; set; }
-}
-
-public class GetMoviesQueryGenreModel
-{
-    public string? Name { get; set; }
-}
-
-public class GetMoviesQueryDirectorModel
-{
-    public string? Name { get; set; }
-    public string? Surname { get; set; }
-}
-
-public class GetMoviesQueryActorModel
-{
-    public string? Name { get; set; }
-    public string? Surname { get; set; }
+    public string? Genre { get; set; }
+    public string? Director { get; set; }
+    public string[]? Actors { get; set; }
 }
