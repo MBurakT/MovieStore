@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
-namespace WebApi.Models.MovieModels.GetMovieCommandById;
+namespace WebApi.Models.MovieDtos;
 
-public class GetMovieCommandMovieModel
+public class MovieDto
 {
     public string? Name { get; set; }
     public DateTime? ReleaseDate { get; set; }
