@@ -1,7 +1,7 @@
-using System.Linq;
 using AutoMapper;
+using WebApi.Dtos.MovieDtos.PostMovieDtos;
 using WebApi.Entities;
-using WebApi.Models.MovieDtos;
+using WebApi.Models.MovieDtos.GetMovieDtos;
 
 namespace WebApi.MappingProfiles;
 
@@ -9,10 +9,14 @@ public class MovieProfile : Profile
 {
     public MovieProfile()
     {
-        CreateMap<Movie, MovieDto>()
-            .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => src.Genre.Name))
-            .ForMember(dest => dest.Director, opt => opt.MapFrom(src => $"{src.Director.Name} {src.Director.Surname}"))
-            .ForMember(dest => dest.Actors, opt => opt.MapFrom(src => src.Actors.Select(x => $"{x.Name} {x.Surname}")))
-            .ReverseMap();
+        CreateMap<Movie, GetMovieDto>();
+        CreateMap<Genre, GetMovieDto.GetMovieGenreDto>();
+        CreateMap<Director, GetMovieDto.GetMovieDirectorDto>();
+        CreateMap<Actor, GetMovieDto.GetMovieActorDto>();
+
+        CreateMap<AddMovieDto, Movie>();
+        CreateMap<AddMovieDto.AddMovieGenreDto, Genre>();
+        CreateMap<AddMovieDto.AddMovieDirectorDto, Director>();
+        CreateMap<AddMovieDto.AddMovieActorDto, Actor>();
     }
 }

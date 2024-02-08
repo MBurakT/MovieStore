@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ControllerOperations.MovieOperations;
+using WebApi.Dtos.MovieDtos.PostMovieDtos;
 
 namespace WebApi.Controllers;
 
@@ -24,5 +25,12 @@ public class MovieController : ControllerBase
     public IActionResult GetMovieCommandById(int id)
     {
         return Ok(_operation.GetMovieCommandById(id));
+    }
+
+    [HttpPost]
+    public IActionResult AddMovieCommand([FromBody] AddMovieDto addMovieDto)
+    {
+        _operation.AddMovieCommand(addMovieDto);
+        return Ok();
     }
 }
