@@ -26,9 +26,9 @@ public class MovieOperation
     {
         IQueryable<Movie> dbMovie = _context.Movies.AsNoTracking();
 
-        if (!dbMovie.Any()) return new GetMoviesDto();
+        if (dbMovie.Any(x => x.IsDeleted)) return new GetMoviesDto();
 
-        var movies = dbMovie.Include(x => x.Genre).Include(x => x.Director).OrderBy(x => x.Name).ToList();
+        var movies = dbMovie.Where(x => !x.IsDeleted).Include(x => x.Genre).Include(x => x.Director).OrderBy(x => x.Name).ToList();
         var movieActors = _context.MovieActors;
         var actors = _context.Actors;
 
@@ -44,9 +44,9 @@ public class MovieOperation
 
         IQueryable<Movie> dbMovie = _context.Movies.AsNoTracking();
 
-        if (!dbMovie.Any(x => x.Id == id)) throw new InvalidOperationException("Movie does not exist!");
+        if (!dbMovie.Any(x => x.Id == id && !x.IsDeleted)) throw new InvalidOperationException("Movie does not exist!");
 
-        Movie movie = dbMovie.Where(x => x.Id == id).Include(x => x.Genre).Include(x => x.Director).Single();
+        Movie movie = dbMovie.Where(x => x.Id == id && !x.IsDeleted).Include(x => x.Genre).Include(x => x.Director).Single();
 
         movie.Actors = _context.Actors.Where(x => _context.MovieActors.Where(y => y.MovieId == id).Select(y => y.ActorId).Contains(x.Id)).ToList();
 
@@ -106,11 +106,14 @@ public class MovieOperation
 
         if (director is not null)
         {
+            string directorName = director.Name;
+            string directorSurname = director.Surname;
+
             DbSet<Director> dbDirector = _context.Directors;
-            if (!dbDirector.Any(x => x.Name.Equals(director.Name) && x.Surname.Equals(director.Surname)))
+            if (!dbDirector.Any(x => x.Name.Equals(directorName) && x.Surname.Equals(directorSurname)))
                 throw new InvalidOperationException("Director does not exist!");
 
-            movie.DirectorId = dbDirector.Single(x => x.Name.Equals(director.Name) && x.Surname.Equals(director.Surname)).Id;
+            movie.DirectorId = dbDirector.Single(x => x.Name.Equals(directorName) && x.Surname.Equals(directorSurname)).Id;
         }
 
         ICollection<Actor>? actors = movie.Actors;
