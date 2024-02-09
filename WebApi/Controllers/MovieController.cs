@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ControllerOperations.MovieOperations;
 using WebApi.Dtos.MovieDtos.PostMovieDtos;
+using WebApi.Dtos.MovieDtos.PutMovieDtos;
 
 namespace WebApi.Controllers;
 
@@ -31,6 +32,13 @@ public class MovieController : ControllerBase
     public IActionResult AddMovieCommand([FromBody] AddMovieDto addMovieDto)
     {
         _operation.AddMovieCommand(addMovieDto);
+        return Ok();
+    }
+
+    [HttpPut("{id:int}")]
+    public IActionResult UpdateMovieCommand(int id, [FromBody] UpdateMovieDto updateMovieDto)
+    {
+        _operation.UpdateMovieCommand(id, updateMovieDto);
         return Ok();
     }
 }

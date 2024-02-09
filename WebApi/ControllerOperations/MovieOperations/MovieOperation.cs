@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DBOperations;
 using WebApi.Dtos.MovieDtos.PostMovieDtos;
+using WebApi.Dtos.MovieDtos.PutMovieDtos;
 using WebApi.Entities;
 using WebApi.Models.MovieDtos.GetMovieDtos;
 
@@ -71,6 +72,68 @@ public class MovieOperation
         addMovieDto.Actors.ForEach(x => dbMovieActors.Add(new MovieActor(movie,
             _context.Actors.SingleOrDefault(y => y.Name.Equals(x.Name) && y.Surname.Equals(y.Surname)) ?? new Actor(x.Name, x.Surname))));
 
+        _context.SaveChanges();
+    }
+
+    public void UpdateMovieCommand(int id, UpdateMovieDto updateMovieDto)
+    {
+        if (id < 1) throw new InvalidOperationException("Movie does not exist!");
+
+        DbSet<Movie> dbMovie = _context.Movies;
+
+        if (!dbMovie.Any(x => x.Id == id)) throw new InvalidOperationException("Movie does not exist!");
+
+        Movie movie = _mapper.Map<Movie>(updateMovieDto);
+
+        movie.Id = id;
+
+        movie.Name = updateMovieDto.Name ?? movie.Name;
+        movie.ReleaseDate = updateMovieDto.ReleaseDate ?? movie.ReleaseDate;
+        movie.Price = updateMovieDto.Price ?? movie.Price;
+
+        Genre? genre = movie.Genre;
+        movie.Genre = null;
+
+        if (genre is not null)
+        {
+            DbSet<Genre> dbGenre = _context.Genres;
+            if (!dbGenre.Any(x => x.Name.Equals(genre.Name))) throw new InvalidOperationException("Genre does not exist!");
+            movie.GenreId = dbGenre.Single(x => x.Name.Equals(genre.Name)).Id;
+        }
+
+        Director? director = movie.Director;
+        movie.Director = null;
+
+        if (director is not null)
+        {
+            DbSet<Director> dbDirector = _context.Directors;
+            if (!dbDirector.Any(x => x.Name.Equals(director.Name) && x.Surname.Equals(director.Surname)))
+                throw new InvalidOperationException("Director does not exist!");
+
+            movie.DirectorId = dbDirector.Single(x => x.Name.Equals(director.Name) && x.Surname.Equals(director.Surname)).Id;
+        }
+
+        ICollection<Actor>? actors = movie.Actors;
+
+        if (actors is not null && actors.Count > 0)
+        {
+            IQueryable<Actor> dbActor = _context.Actors.AsNoTracking();
+            List<MovieActor> movieActors = new();
+
+            actors.ToList().ForEach(x =>
+                {
+                    x = dbActor.SingleOrDefault(y => y.Name.Equals(x.Name) && y.Surname.Equals(x.Surname))
+                        ?? throw new InvalidOperationException($"Actor does not exist! Actor: {x.Name} {x.Surname}");
+                    movieActors.Add(new MovieActor(id, x.Id));
+                });
+
+            DbSet<MovieActor> dbMovieActor = _context.MovieActors;
+
+            dbMovieActor.AddRange(movieActors);
+            dbMovieActor.RemoveRange(dbMovieActor.Where(x => x.MovieId == id));
+        }
+
+        dbMovie.Update(movie);
         _context.SaveChanges();
     }
 }
