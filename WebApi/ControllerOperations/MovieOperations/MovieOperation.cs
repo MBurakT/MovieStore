@@ -136,4 +136,20 @@ public class MovieOperation
         dbMovie.Update(movie);
         _context.SaveChanges();
     }
+
+    public void DeleteMovieCommand(int id)
+    {
+        if (id < 1) throw new InvalidOperationException("Movie does not exist!");
+
+        DbSet<Movie> dbMovie = _context.Movies;
+
+        if (!dbMovie.Any(x => x.Id == id)) throw new InvalidOperationException("Movie does not exist!");
+
+        Movie movie = dbMovie.Single(x => x.Id == id);
+
+        movie.IsDeleted = true;
+
+        dbMovie.Update(movie);
+        _context.SaveChanges();
+    }
 }

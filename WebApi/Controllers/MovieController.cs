@@ -41,4 +41,11 @@ public class MovieController : ControllerBase
         _operation.UpdateMovieCommand(id, updateMovieDto);
         return Ok();
     }
+
+    [HttpDelete("{id:int}")]
+    public IActionResult DeleteMovieCommand(int id)
+    {
+        _operation.DeleteMovieCommand(id);
+        return Ok();
+    }
 }
