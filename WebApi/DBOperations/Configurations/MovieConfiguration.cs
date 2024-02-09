@@ -12,6 +12,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(x => x.Name).HasColumnName("NAME").IsRequired();
         builder.Property(x => x.ReleaseDate).HasColumnName("RELEASEDATE").IsRequired();
         builder.Property(x => x.Price).HasColumnName("PRICE").IsRequired();
+        builder.Property(x => x.IsDeleted).HasColumnName("ISDELETED").IsRequired();
         builder.Property(x => x.GenreId).HasColumnName("GENREID").IsRequired();
         builder.Property(x => x.DirectorId).HasColumnName("DIRECTORID").IsRequired();
 
