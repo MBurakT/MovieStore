@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DBOperations;
 using WebApi.Dtos.GenreDtos;
+using WebApi.Dtos.GenreDtos.PorstGenreDtos;
 using WebApi.Entities;
 
 namespace WebApi.ControllerOperations.GenreOperations;
@@ -38,5 +39,15 @@ public class GenreOperation
         if (!dbGenre.Any(x => x.Id == id)) throw new InvalidOperationException("Genre does not exist!");
 
         return _mapper.Map<GetGenreDto>(dbGenre.Include(x => x.Movies.Where(y => !y.IsDeleted)).Single(x => x.Id == id));
+    }
+
+    public void AddGenreCommand(AddGenreDto addGenreDto)
+    {
+        DbSet<Genre> dbGenre = _context.Genres;
+
+        if (dbGenre.AsNoTracking().Any(x => x.Name.Equals(addGenreDto.Name))) throw new InvalidOperationException("Genre already exists!");
+
+        dbGenre.Add(_mapper.Map<Genre>(addGenreDto));
+        _context.SaveChanges();
     }
 }

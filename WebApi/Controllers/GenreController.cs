@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ControllerOperations.GenreOperations;
+using WebApi.Dtos.GenreDtos.PorstGenreDtos;
 
 namespace WebApi.Controllers;
 
@@ -24,5 +25,12 @@ public class GenreController : ControllerBase
     public IActionResult GetGenreCommandById(int id)
     {
         return Ok(_operation.GetGenreCommandById(id));
+    }
+
+    [HttpPost]
+    public IActionResult AddGenreCommand([FromBody] AddGenreDto addGenreDto)
+    {
+        _operation.AddGenreCommand(addGenreDto);
+        return Ok();
     }
 }
