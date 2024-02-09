@@ -1,4 +1,4 @@
-namespace WebApi.Dtos.GenreDtos.PorstGenreDtos;
+namespace WebApi.Dtos.GenreDtos.PostGenreDtos;
 
 public class AddGenreDto
 {

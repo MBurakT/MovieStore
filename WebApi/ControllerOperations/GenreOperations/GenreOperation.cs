@@ -5,7 +5,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DBOperations;
 using WebApi.Dtos.GenreDtos;
-using WebApi.Dtos.GenreDtos.PorstGenreDtos;
+using WebApi.Dtos.GenreDtos.PostGenreDtos;
+using WebApi.Dtos.GenreDtos.PutGenreDtos;
 using WebApi.Entities;
 
 namespace WebApi.ControllerOperations.GenreOperations;
@@ -48,6 +49,21 @@ public class GenreOperation
         if (dbGenre.AsNoTracking().Any(x => x.Name.Equals(addGenreDto.Name))) throw new InvalidOperationException("Genre already exists!");
 
         dbGenre.Add(_mapper.Map<Genre>(addGenreDto));
+        _context.SaveChanges();
+    }
+
+    public void UpdateGenreCommand(int id, UpdateGenreDto updateGenreDto)
+    {
+        if (id < 1) throw new InvalidOperationException("Genre does not exist!");
+
+        IQueryable<Genre> dbGenre = _context.Genres.AsNoTracking();
+
+        if (dbGenre.Any(x => x.Name.Equals(updateGenreDto.Name))) throw new InvalidOperationException("Genre already exists!");
+
+        Genre genre = _mapper.Map<Genre>(updateGenreDto);
+        genre.Id = id;
+
+        _context.Genres.Update(genre);
         _context.SaveChanges();
     }
 }
