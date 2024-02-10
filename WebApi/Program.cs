@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApi.ControllerOperations.DirectorOperations;
 using WebApi.ControllerOperations.GenreOperations;
 using WebApi.ControllerOperations.MovieOperations;
 using WebApi.DBOperations;
@@ -34,6 +35,7 @@ public class Program
 
         builder.Services.AddScoped<MovieOperation>();
         builder.Services.AddScoped<GenreOperation>();
+        builder.Services.AddScoped<DirectorOperation>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
