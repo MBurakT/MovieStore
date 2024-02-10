@@ -5,6 +5,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DBOperations;
 using WebApi.Dtos.DirectorDtos.GetDirectorDtos;
+using WebApi.Dtos.DirectorDtos.PostDirectorDtos;
+using WebApi.Dtos.DirectorDtos.PutDirectorDtos;
 using WebApi.Entities;
 
 namespace WebApi.ControllerOperations.DirectorOperations;
@@ -38,5 +40,35 @@ public class DirectorOperation
         if (!dbDirector.Any(x => x.Id == id)) throw new InvalidOperationException("Director does not exist!");
 
         return _mapper.Map<GetDirectorDto>(dbDirector.Include(x => x.Movies.Where(y => !y.IsDeleted)).Single(x => x.Id == id));
+    }
+
+    public void AddDirectorCommand(AddDirectorDto addDirectorDto)
+    {
+        IQueryable<Director> dbDirector = _context.Directors.AsNoTracking();
+
+        Director director = _mapper.Map<Director>(addDirectorDto);
+
+        if (dbDirector.Any(x => x.Name.Equals(director.Name) && x.Surname.Equals(director.Name))) throw new InvalidOperationException("Director already exists!");
+
+        _context.Directors.Add(director);
+        _context.SaveChanges();
+    }
+
+    public void UpdateDirectorCommand(int id, UpdateDirectorDto updateDirectorDto)
+    {
+        if (id < 1) throw new InvalidOperationException("Director does not exist!");
+
+        IQueryable<Director> dbDirector = _context.Directors.AsNoTracking();
+
+        if (!dbDirector.Any(x => x.Id == id)) throw new InvalidOperationException("Director does not exist!");
+
+        Director director = _mapper.Map<Director>(updateDirectorDto);
+
+        if (dbDirector.Any(x => x.Name.Equals(director.Name) && x.Surname.Equals(director.Surname))) throw new InvalidOperationException("Director already exists!");
+
+        director.Id = id;
+
+        _context.Directors.Update(director);
+        _context.SaveChanges();
     }
 }

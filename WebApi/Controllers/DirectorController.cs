@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.ControllerOperations.DirectorOperations;
+using WebApi.Dtos.DirectorDtos.PostDirectorDtos;
+using WebApi.Dtos.DirectorDtos.PutDirectorDtos;
 
 namespace WebApi.Controllers;
 
@@ -24,5 +26,19 @@ public class DirectorController : ControllerBase
     public IActionResult GetDirectorCommand(int id)
     {
         return Ok(_operation.GetDirectorCommand(id));
+    }
+
+    [HttpPost]
+    public IActionResult AddDirectorCommand([FromBody] AddDirectorDto addDirectorDto)
+    {
+        _operation.AddDirectorCommand(addDirectorDto);
+        return Ok();
+    }
+
+    [HttpPut("{id:int}")]
+    public IActionResult UpdateDirectorCommand(int id, [FromBody] UpdateDirectorDto updateDirectorDto)
+    {
+        _operation.UpdateDirectorCommand(id, updateDirectorDto);
+        return Ok();
     }
 }
