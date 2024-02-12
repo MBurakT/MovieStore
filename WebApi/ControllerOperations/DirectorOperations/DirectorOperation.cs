@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using WebApi.ControllerOperationValidators.DirectorOperationValidators;
 using WebApi.DBOperations;
 using WebApi.Dtos.DirectorDtos.GetDirectorDtos;
 using WebApi.Dtos.DirectorDtos.PostDirectorDtos;
@@ -44,6 +46,10 @@ public class DirectorOperation
 
     public void AddDirectorCommand(AddDirectorDto addDirectorDto)
     {
+        AddDirectorDtoValidator validator = new();
+
+        validator.ValidateAndThrow(addDirectorDto);
+
         IQueryable<Director> dbDirector = _context.Directors.AsNoTracking();
 
         Director director = _mapper.Map<Director>(addDirectorDto);
@@ -57,6 +63,10 @@ public class DirectorOperation
     public void UpdateDirectorCommand(int id, UpdateDirectorDto updateDirectorDto)
     {
         if (id < 1) throw new InvalidOperationException("Director does not exist!");
+
+        UpdateDirectorDtoValidator validator = new();
+
+        validator.ValidateAndThrow(updateDirectorDto);
 
         IQueryable<Director> dbDirector = _context.Directors.AsNoTracking();
 
