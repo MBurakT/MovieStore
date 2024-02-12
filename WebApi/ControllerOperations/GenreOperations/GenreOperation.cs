@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using WebApi.ControllerOperationValidators.GenreOperationValidators;
 using WebApi.DBOperations;
 using WebApi.Dtos.GenreDtos;
 using WebApi.Dtos.GenreDtos.PostGenreDtos;
@@ -44,6 +46,10 @@ public class GenreOperation
 
     public void AddGenreCommand(AddGenreDto addGenreDto)
     {
+        AddGenreDtoValidator validator = new();
+
+        validator.ValidateAndThrow(addGenreDto);
+
         DbSet<Genre> dbGenre = _context.Genres;
 
         if (dbGenre.AsNoTracking().Any(x => x.Name.Equals(addGenreDto.Name))) throw new InvalidOperationException("Genre already exists!");
@@ -55,6 +61,10 @@ public class GenreOperation
     public void UpdateGenreCommand(int id, UpdateGenreDto updateGenreDto)
     {
         if (id < 1) throw new InvalidOperationException("Genre does not exist!");
+
+        UpdateGenreDtoValidator validator = new();
+
+        validator.ValidateAndThrow(updateGenreDto);
 
         IQueryable<Genre> dbGenre = _context.Genres.AsNoTracking();
 
