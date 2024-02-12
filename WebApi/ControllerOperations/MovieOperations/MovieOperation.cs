@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using WebApi.ControllerOperationValidators.MovieOperationValidators;
 using WebApi.DBOperations;
 using WebApi.Dtos.MovieDtos.PostMovieDtos;
 using WebApi.Dtos.MovieDtos.PutMovieDtos;
@@ -55,6 +57,10 @@ public class MovieOperation
 
     public void AddMovieCommand(AddMovieDto addMovieDto)
     {
+        AddMovieDtoValidator validator = new();
+
+        validator.ValidateAndThrow(addMovieDto);
+
         if (_context.Movies.Any(x => x.Name.Equals(addMovieDto.Name))) throw new Exception("Movie already exists!");
 
         Movie movie = _mapper.Map<Movie>(addMovieDto);
@@ -78,6 +84,10 @@ public class MovieOperation
     public void UpdateMovieCommand(int id, UpdateMovieDto updateMovieDto)
     {
         if (id < 1) throw new InvalidOperationException("Movie does not exist!");
+
+        UpdateMovieDtoValidator validator = new();
+
+        validator.ValidateAndThrow(updateMovieDto);
 
         DbSet<Movie> dbMovie = _context.Movies;
 
