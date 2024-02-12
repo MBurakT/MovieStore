@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApi.ControllerOperations.ActorOperations;
+using WebApi.ControllerOperations.CustomerOperations;
 using WebApi.ControllerOperations.DirectorOperations;
 using WebApi.ControllerOperations.GenreOperations;
 using WebApi.ControllerOperations.MovieOperations;
@@ -38,6 +39,7 @@ public class Program
         builder.Services.AddScoped<GenreOperation>();
         builder.Services.AddScoped<DirectorOperation>();
         builder.Services.AddScoped<ActorOperation>();
+        builder.Services.AddScoped<CustomerOperation>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
