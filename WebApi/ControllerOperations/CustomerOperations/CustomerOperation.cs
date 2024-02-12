@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using WebApi.ControllerOperationValidators.CustomerOperationValidators;
 using WebApi.DBOperations;
 using WebApi.Dtos.CustomerDtos.GetCustomerDtos;
 using WebApi.Dtos.CustomerDtos.PostCustomerDtos;
@@ -70,6 +72,10 @@ public class CustomerOperation
 
     public void AddCustomerCommand(AddCustomerDto addCustomerDto)
     {
+        AddCustomerDtoValidator validator = new();
+
+        validator.ValidateAndThrow(addCustomerDto);
+
         IQueryable<Customer> dbCustomer = _context.Customers.AsNoTracking();
 
         if (!dbCustomer.Any(x => x.Name.Equals(addCustomerDto.Name) && x.Surname.Equals(addCustomerDto.Surname)))
@@ -82,6 +88,10 @@ public class CustomerOperation
     public void UpdateCustomerCommand(int id, UpdateCustomerDto updateCustomerDto)
     {
         if (id < 1) throw new InvalidOperationException("Customer does not exist!");
+
+        UpdateCustomerDtoValidator validator = new();
+
+        validator.ValidateAndThrow(updateCustomerDto);
 
         IQueryable<Customer> dbCustomer = _context.Customers.AsNoTracking();
 
