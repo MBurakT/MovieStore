@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using WebApi.ControllerOperationValidators.ActorOperationValidators;
 using WebApi.DBOperations;
 using WebApi.Dtos.ActorDtos.GetActorDtos;
 using WebApi.Dtos.ActorDtos.PostActorDtos;
@@ -60,6 +62,10 @@ public class ActorOperation
 
     public void AddActorCommand(AddActorDto addActorDto)
     {
+        AddActorDtoValidator validator = new();
+
+        validator.ValidateAndThrow(addActorDto);
+
         IQueryable<Actor> dbActor = _context.Actors.AsNoTracking();
 
         Actor actor = _mapper.Map<Actor>(addActorDto);
@@ -73,6 +79,10 @@ public class ActorOperation
     public void UpdateActorCommand(int id, UpdateActorDto updateActorDto)
     {
         if (id < 1) throw new InvalidOperationException("Actor does not exist!");
+
+        UpdateActorDtoValidator validator = new();
+
+        validator.ValidateAndThrow(updateActorDto);
 
         IQueryable<Actor> dbActor = _context.Actors.AsNoTracking();
 
