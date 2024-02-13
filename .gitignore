@@ -11,5 +11,7 @@
 [Oo]bj/
 
 Database.txt
+RootLogPath.txt
 SQLite/
 Queries/
+Logs/

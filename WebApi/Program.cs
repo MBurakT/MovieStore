@@ -14,6 +14,7 @@ using WebApi.ControllerOperations.GenreOperations;
 using WebApi.ControllerOperations.MovieOperations;
 using WebApi.DBOperations;
 using WebApi.DBOperations.DataSeeders;
+using WebApi.Services.LoggerServices;
 
 namespace WebApi;
 
@@ -40,6 +41,8 @@ public class Program
         builder.Services.AddScoped<DirectorOperation>();
         builder.Services.AddScoped<ActorOperation>();
         builder.Services.AddScoped<CustomerOperation>();
+
+        builder.Services.AddSingleton<IFileLoggerService, FileLogger>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
