@@ -28,7 +28,7 @@ public class MovieOperation
     {
         IQueryable<Movie> dbMovie = _context.Movies.AsNoTracking();
 
-        if (dbMovie.Any(x => x.IsDeleted)) return new GetMoviesDto();
+        if (!dbMovie.Any(x => !x.IsDeleted)) return new GetMoviesDto();
 
         var movies = dbMovie.Where(x => !x.IsDeleted).Include(x => x.Genre).Include(x => x.Director).OrderBy(x => x.Name).ToList();
         var movieActors = _context.MovieActors;
