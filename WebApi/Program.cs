@@ -14,6 +14,7 @@ using WebApi.ControllerOperations.GenreOperations;
 using WebApi.ControllerOperations.MovieOperations;
 using WebApi.DBOperations;
 using WebApi.DBOperations.DataSeeders;
+using WebApi.Middlewares;
 using WebApi.Services.LoggerServices;
 
 namespace WebApi;
@@ -42,7 +43,7 @@ public class Program
         builder.Services.AddScoped<ActorOperation>();
         builder.Services.AddScoped<CustomerOperation>();
 
-        builder.Services.AddSingleton<IFileLoggerService, FileLogger>();
+        builder.Services.AddSingleton<IFileLoggerService, FileLoggerService>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -66,6 +67,7 @@ public class Program
 
         app.UseAuthorization();
 
+        app.UseCustomExceptionMiddleware();
 
         app.MapControllers();
 

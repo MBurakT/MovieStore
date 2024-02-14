@@ -4,9 +4,9 @@ using System.Text;
 
 namespace WebApi.Services.LoggerServices;
 
-public class FileLogger : IFileLoggerService
+public class FileLoggerService : IFileLoggerService
 {
-    public void Log(string message)
+    public void Log(string message, string endofline = "\n")
     {
         string time = DateTime.Now.ToString("yyyyMMdd");
 
@@ -15,6 +15,10 @@ public class FileLogger : IFileLoggerService
         Directory.CreateDirectory(path);
 
         path = $"{path}\\{time}.txt";
+
+        message += endofline;
+
+        Console.WriteLine(message);
 
         using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.None))
         {
