@@ -33,13 +33,13 @@ public class CustomExceptionMiddleware
 
             watch.Stop();
 
-            _filelogger.Log($"[{DateTime.Now:yyyy.MM.dd}] [Request] HTTP{requestMethod} {requestPath} responded {context.Response.StatusCode} in {watch.Elapsed.TotalMilliseconds}ms");
+            _filelogger.Log($"[{DateTime.Now:yyyy.MM.dd}] [Response] HTTP{requestMethod} {requestPath} responded {context.Response.StatusCode} in {watch.Elapsed.TotalMilliseconds}ms");
         }
         catch (Exception ex)
         {
             watch.Stop();
 
-            _filelogger.Log($"[{DateTime.Now:yyyy.MM.dd}] [Error] HTTP{requestMethod} {context.Response.StatusCode} Message: {ex.Message} in {watch.Elapsed.TotalMilliseconds}ms");
+            _filelogger.Log($"[{DateTime.Now:yyyy.MM.dd}] [Error] HTTP{requestMethod} {context.Response.StatusCode} in {watch.Elapsed.TotalMilliseconds}ms. Message: {ex.Message}");
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
