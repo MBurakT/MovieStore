@@ -71,6 +71,8 @@ public class Program
 
         app.MapControllers();
 
+        app.MapGet("/", () => "MovieStore");
+
         app.Run();
     }
 }
