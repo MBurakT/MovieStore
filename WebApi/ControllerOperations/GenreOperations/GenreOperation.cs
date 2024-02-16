@@ -28,7 +28,7 @@ public class GenreOperation
     {
         IQueryable<Genre> dbGenre = _context.Genres.AsNoTracking();
 
-        if (!dbGenre.Any()) return new GetGenresDto();
+        if (!dbGenre.Any()) return new GetGenresDto { Genres = new() };
 
         return new GetGenresDto { Genres = _mapper.Map<List<GetGenreDto>>(dbGenre.Include(x => x.Movies.Where(y => !y.IsDeleted))) };
     }
