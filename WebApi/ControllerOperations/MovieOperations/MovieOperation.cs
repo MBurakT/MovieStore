@@ -28,7 +28,7 @@ public class MovieOperation
     {
         IQueryable<Movie> dbMovie = _context.Movies.AsNoTracking();
 
-        if (!dbMovie.Any(x => !x.IsDeleted)) return new GetMoviesDto();
+        if (!dbMovie.Any(x => !x.IsDeleted)) return new GetMoviesDto { Movies = new() };
 
         var movies = dbMovie.Where(x => !x.IsDeleted).Include(x => x.Genre).Include(x => x.Director).OrderBy(x => x.Name).ToList();
         var movieActors = _context.MovieActors;
@@ -61,11 +61,11 @@ public class MovieOperation
 
         validator.ValidateAndThrow(addMovieDto);
 
-        if (_context.Movies.Any(x => x.Name.Equals(addMovieDto.Name))) throw new Exception("Movie already exists!");
+        if (_context.Movies.Any(x => x.Name.Equals(addMovieDto.Name))) throw new InvalidOperationException("Movie already exists!");
 
         Movie movie = _mapper.Map<Movie>(addMovieDto);
 
-        movie.Genre = _context.Genres.SingleOrDefault(x => x.Name.Equals(movie.Genre.Name)) ?? throw new Exception("Genre does not exist!");
+        movie.Genre = _context.Genres.SingleOrDefault(x => x.Name.Equals(movie.Genre.Name)) ?? throw new InvalidOperationException("Genre does not exist!");
 
         string directorName = movie.Director.Name;
         string directorSurname = movie.Director.Surname;
@@ -73,9 +73,7 @@ public class MovieOperation
         movie.Director = _context.Directors.SingleOrDefault(x => x.Name.Equals(directorName) && x.Surname.Equals(directorSurname))
             ?? new Director(directorName, directorSurname);
 
-        DbSet<MovieActor> dbMovieActors = _context.MovieActors;
-
-        addMovieDto.Actors.ForEach(x => dbMovieActors.Add(new MovieActor(movie,
+        movie.Actors.ToList().ForEach(x => _context.MovieActors.Add(new MovieActor(movie,
             _context.Actors.SingleOrDefault(y => y.Name.Equals(x.Name) && y.Surname.Equals(y.Surname)) ?? new Actor(x.Name, x.Surname))));
 
         _context.SaveChanges();
